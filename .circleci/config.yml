@@ -3,7 +3,9 @@ jobs:
  build:
   # Variable expansion in working_directory not supported at this time
   # You will need to modify the code below to reflect your github account/repo setup
+  # Configure a working directory to build the Docker container of the application
   working_directory: /go/src/github.com/GopherState/invoicer-chapter2
+  # Declare the environment the job will run on
   docker:
    - image: circleci/golang:1.8
   steps:
@@ -27,12 +29,18 @@ jobs:
    - run: mkdir -p "${GOPATH_BASE}"
    - run: mkdir -p "${GOPATH_HEAD}/bin"
        
+   # run the unit tests of the application
    - run:
       name: Testing application
       command: |
           go test \
           github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
-
+          
+   # if changes are applied to the master branch, build the Docker container of the application
+   # log into the DockerHub service
+   # build the application binary
+   # build a container of the application using a Dockerfile
+   # push the container to DockerHub
    - deploy:
        command: |
          if [ "${CIRCLE_BRANCH}" == "master" ]; then
